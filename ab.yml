@@ -143,7 +143,6 @@ Resources:
                 
    
 Outputs:
-
     Cluster:
         Description: A reference to the ECS cluster
         Value: !Ref ECSCluster
