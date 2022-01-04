@@ -18,4 +18,55 @@ aws cloudformation create-stack --stack-name my-test-stack \
    properties([parameters([string(defaultValue: '2', name: 'ClusterSize')])])
    properties([parameters([string(defaultValue: 'test', name: 'KeyPair')])])
    properties([parameters([string(defaultValue: 'ami-0ec2e33c6e1161e98', name: 'AMId')])])
+
+################################################################################################################################
+
+   if aws cloudformation describe-stacks --stack-name "$STACK_NAME" >/dev/null 2>/dev/null; then
+   echo "$STACK_NAME exists!"
+fi
+  
+# Delete stack and wait for completion
+aws cloudformation delete-stack --stack-name "$STACK_NAME"
+aws cloudformation wait stack-delete-complete --stack-name "$STACK_NAME"
+  
+# Create stack and wait for completion
+aws cloudformation create-stack \
+   --region "$AWS_REGION" \
+   --stack-name "$STACK_NAME" \
+   --template-body "file://mytemplate.yaml" \
+   --parameters <parameters>
+   ...
+aws cloudformation wait stack-create-complete --stack-name "$STACK_NAME"
+
+
+
+
+
+if aws cloudformation describe-stacks --stack-name ${stackname} >/dev/null 2>/dev/null; then
+   echo "${stackname} exists!"
+
+
+
+  
+# Delete stack and wait for completion
+#aws cloudformation delete-stack --stack-name ${stackname}
+#aws cloudformation wait stack-delete-complete --stack-name ${stackname}
+elif aws cloudformation update-stack --stack-name ${stackname} \
+	--template-body file://real.yml \
+    --parameters  ParameterKey=EnvironmentName,ParameterValue=${EnvironmentName}  ParameterKey=Subnets,ParameterValue=${subnets} ParameterKey=InstanceType,ParameterValue=${InstanceType} ParameterKey=ClusterSize,ParameterValue=${ClusterSize} ParameterKey=VPC,ParameterValue=${VPC} ParameterKey=SecurityGroup,ParameterValue=${SecurityGroup} ParameterKey=KeyPair,ParameterValue=${KeyPair} ParameterKey=AMId,ParameterValue=${AMId} --capabilities CAPABILITY_NAMED_IAM ;then 
+    echo "${stackname} updating start!"
+aws cloudformation wait stack-update-complete --stack-name ${stackname}
+    echo "${stackname} update complete!"
+
+
+else aws cloudformation create-stack --stack-name ${stackname} \
+    --template-body file://real.yml \
+    --parameters  ParameterKey=EnvironmentName,ParameterValue=${EnvironmentName}  ParameterKey=Subnets,ParameterValue=${subnets} ParameterKey=InstanceType,ParameterValue=${InstanceType} ParameterKey=ClusterSize,ParameterValue=${ClusterSize} ParameterKey=VPC,ParameterValue=${VPC} ParameterKey=SecurityGroup,ParameterValue=${SecurityGroup} ParameterKey=KeyPair,ParameterValue=${KeyPair} ParameterKey=AMId,ParameterValue=${AMId} --capabilities CAPABILITY_NAMED_IAM
+ 
+ aws cloudformation wait stack-create-complete --stack-name ${stackname}
+    echo "${stackname} update complete!"
+    
+
+ fi 
+
   
