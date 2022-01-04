@@ -1,9 +1,21 @@
 aws cloudformation create-stack --stack-name my-test-stack \
     --template-body file://ab.yml \
-    --parameters  ParameterKey=EnvironmentName,ParameterValue=ibrar  ParameterKey=Subnets,ParameterValue=\"subnet-0701fd774993bed57,subnet-031c4e048ba16d7da\" ParameterKey=InstanceType,ParameterValue=t2.micro ParameterKey=ClusterSize,ParameterValue=2 ParameterKey=VPC,ParameterValue=vpc-0d0c36615fed53aa2 ParameterKey=SecurityGroup,ParameterValue=sg-0761c2ae1d0c78119 ParameterKey=KeyPair,ParameterValue=test ParameterKey=AMId,ParameterValue=ami-0ec2e33c6e1161e98 --capabilities CAPABILITY_NAMED_IAM
+    --parameters  ParameterKey=EnvironmentName,ParameterValue=${EnvironmentName}  ParameterKey=Subnets,ParameterValue=${subnets} ParameterKey=InstanceType,ParameterValue=${InstanceType} ParameterKey=ClusterSize,ParameterValue=${ClusterSize} ParameterKey=VPC,ParameterValue=${VPC} ParameterKey=SecurityGroup,ParameterValue=${SecurityGroup} ParameterKey=KeyPair,ParameterValue=${KeyPair} ParameterKey=AMId,ParameterValue=${AMId} --capabilities CAPABILITY_NAMED_IAM
 
 
 
 
    !Ref ECSAutoScalingGroup
    Namespace: AWS/ECS
+
+
+
+   properties([parameters([string(defaultValue: 'g-0761c2ae1d0c78119', name: 'SecurityGroup')])])
+   properties([parameters([string(defaultValue: 'ibrar', name: 'EnvironmentName')])])
+   properties([parameters([string(defaultValue: 'vpc-0d0c36615fed53aa2', name: 'VPC')])])
+   properties([parameters([string(defaultValue: '\"subnet-0701fd774993bed57,subnet-031c4e048ba16d7da\"', name: 'subnets')])])
+   properties([parameters([string(defaultValue: 't2.micro', name: 'InstanceType')])])
+   properties([parameters([string(defaultValue: '2', name: 'ClusterSize')])])
+   properties([parameters([string(defaultValue: 'test', name: 'KeyPair')])])
+   properties([parameters([string(defaultValue: 'ami-0ec2e33c6e1161e98', name: 'AMId')])])
+  

@@ -142,6 +142,18 @@ Resources:
                 - !Ref ECSRole
 
 
+
+    sgwithoutegress:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    GroupDescription: Limits security group egress traffic
+    SecurityGroupEgress:
+    - CidrIp: 10.0.21.0/24
+      IpProtocol: "-1"
+    VpcId: !Ref VPC
+      
+
+
                 
    
 Outputs:
