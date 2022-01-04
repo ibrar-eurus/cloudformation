@@ -1,0 +1,9 @@
+aws cloudformation create-stack --stack-name my-test-stack \
+    --template-body file://ab.yml \
+    --parameters  ParameterKey=EnvironmentName,ParameterValue=ibrar  ParameterKey=Subnets,ParameterValue=\"subnet-0701fd774993bed57,subnet-031c4e048ba16d7da\" ParameterKey=InstanceType,ParameterValue=t2.micro ParameterKey=ClusterSize,ParameterValue=2 ParameterKey=VPC,ParameterValue=vpc-0d0c36615fed53aa2 ParameterKey=SecurityGroup,ParameterValue=sg-0761c2ae1d0c78119 ParameterKey=KeyPair,ParameterValue=test ParameterKey=AMId,ParameterValue=ami-0ec2e33c6e1161e98 --capabilities CAPABILITY_NAMED_IAM
+
+
+
+
+   !Ref ECSAutoScalingGroup
+   Namespace: AWS/ECS
