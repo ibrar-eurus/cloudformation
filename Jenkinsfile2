@@ -1,0 +1,34 @@
+properties([parameters([string(defaultValue: 'g-0761c2ae1d0c78119', description: 'SecurityGroup for instance', name: 'SecurityGroup'), string(defaultValue: 'ibrar', description: 'cluster EnvironmentName ', name: 'EnvironmentName'), string(defaultValue: 'vpc-0d0c36615fed53aa2', name: 'VPC'), string(defaultValue: 't2.micro', name: 'InstanceType'), string(defaultValue: '"subnet-0701fd774993bed57,subnet-031c4e048ba16d7da"', name: 'subnets\''), string(defaultValue: '2', name: 'ClusterSize'), string(defaultValue: 'test', name: 'KeyPair'), string(defaultValue: 'ami-0ec2e33c6e1161e98', name: 'AMId')])])
+
+pipeline {
+    agent any
+    
+ stages {
+
+
+          stage('Cloning Git') {
+            steps {
+              
+              checkout([$class: 'GitSCM',
+                          branches: [[name: "${params.branch}"]],
+                          doGenerateSubmoduleConfigurations: false,
+                          extensions: [],
+                          gitTool: 'Default',
+                          submoduleCfg: [],
+                          userRemoteConfigs: [[url: 'https://github.com/ibrar-eurus/cloudformation.git', credentialsId: 'git']]
+                        ])
+            
+                //checkout([$class: 'GitSCM', branches: [[name: '${params.BRANCH}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git', url: 'https://github.com/ibrar-eurus/docker-demo.git']]])     
+            }
+        }
+
+    stages {
+        stage('Hello') {
+            steps {
+                sh './script.sh'
+                
+            }
+        }
+    }
+}
+}
