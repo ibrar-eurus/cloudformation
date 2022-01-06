@@ -29,7 +29,7 @@ pipeline {
         stage('Hello') {
             steps {
                  
-                 sh 'script.sh'
+                 sh './script.sh'
                  
                
             }
