@@ -22,7 +22,7 @@ pipeline {
             }
         }
 
-    stages {
+
         stage('Hello') {
             steps {
                 sh './script.sh'
@@ -31,4 +31,4 @@ pipeline {
         }
     }
 }
-}
+
